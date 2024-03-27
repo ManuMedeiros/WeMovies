@@ -7,12 +7,12 @@ import { Input } from "@/components/Input";
 import { useState } from "react";
 import { ButtonSearch } from "@/components/Button/Button.styles";
 import { SearchIcon } from "@/icons/search.icon";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function HomePage() {
   const router = useRouter();
-  const urlQuery = typeof window !== 'undefined' ? window?.location?.href : '';
-  const nameMovie = urlQuery.split("=")[1]?.replace("%20", " ");
+  const urlQuery = useSearchParams();
+  const params = urlQuery.get('search-query');
   const { handleCartAction, allMovies, isLoading, ...props } = useMovie();
   const [search, setSearch] = useState<string>("");
 
@@ -22,9 +22,9 @@ export default function HomePage() {
     router.push(`/search?search-query=${encodedQuery}`);
   };
 
-  const searchLowerCase = nameMovie?.toLowerCase();
+  const searchLowerCase = params?.toLowerCase();
   const filterMovies = allMovies?.filter((item) =>
-    item?.title.toLowerCase().includes(searchLowerCase)
+    item?.title.toLowerCase().includes(searchLowerCase as string)
   );
 
   return isLoading ? (
@@ -38,9 +38,7 @@ export default function HomePage() {
           onChange={(e) => setSearch(e.target.value)}
         />
         <ButtonSearch
-          onClick={() => {
-            handleSearch();
-          }}
+          onClick={handleSearch}
         >
           <SearchIcon />
         </ButtonSearch>

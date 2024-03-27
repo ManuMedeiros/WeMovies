@@ -16,7 +16,7 @@ export default function ListFilmsComponent({
     <Box
       display={"flex"}
       alignItems={"center"}
-      justifyContent={"center"}
+      justifyContent={"flex-start"}
       flexWrap
       maxWidth={"960px"}
       gap={"16px"}
